@@ -1,0 +1,11 @@
+---
+- name: "Create custom user and Add privileges"
+  mysql_user:
+    name: "{{ mysql_user_name }}"
+    password: "{{ mysql_user_pass }}"
+    priv: "{{ mysql_user_priv  }}"
+    state: "present"
+    host: "localhost"
+    append_privs: yes
+    login_unix_socket: "{% if ansible_os_family in ['RedHat', 'Rocky'] %}/var/lib/mysql/mysql.sock{% else %}/var/run/mysqld/mysqld.sock{% endif %}"
+  when: mysql_custom_database is defined 

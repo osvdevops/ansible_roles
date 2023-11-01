@@ -1,0 +1,31 @@
+---
+- name: "Adjust permissions of datadir"
+  file:
+    path: "{{ mysql_datadir }}"
+    owner: "mysql"
+    group: "mysql"
+    mode: 0755
+    state: "directory"
+
+- name: "Ensure that percona is running and enabled"
+  service:
+    name: "mysql"
+    state: "started"
+    enabled: "yes"
+  register: mysql_service
+
+
+- name: "Parse temporary password from mysql log, getting last one"
+  shell: "cat /var/log/mysqld.log | sed -n 's/.*temporary password is generated for root@localhost: //p' | tail -n1"
+  register: temppass
+
+- name: "Set root password (using temp password to log in)"
+  shell: 'mysql -e "SET PASSWORD = ''{{ mysql_root_password }}'';" --connect-expired-password -uroot -p"{{ temppass.stdout }}"'
+
+- name: "Red Hat: Copy .my.cnf file into the root home folder after initial root password changed"
+  template:
+    src: root-my-cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600

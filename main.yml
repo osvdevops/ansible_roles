@@ -1,0 +1,5 @@
+---
+# handlers file for mysql_percona_57
+
+- name: "Restart percona"
+  service: "name=mysql state=restarted"

@@ -1,0 +1,19 @@
+---
+- name: Enable EPEL
+  package:
+    name: epel-release
+    state: present
+
+- name: "Disable local mysql repo"
+  command: "dnf module disable mysql -y"
+
+- name: "Remove mariadb-connector-c-config"
+  yum:
+    name:
+      - "mariadb-connector-c-config"
+    state: absent
+
+- name: "Add Percona yum repository"
+  yum:
+    name: "{{ mysql_percona_repo }}"
+    state: present

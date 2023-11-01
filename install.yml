@@ -1,0 +1,21 @@
+---
+
+- name: "Enable Percona repository "
+  command: "percona-release setup ps57 -y"
+
+- name: "Enable Percona toolkit"
+  command: "percona-release enable tools"
+
+- name: "Install percona database server Percona version 5.7"
+  yum:
+    name: 
+      - "Percona-Server-server-57"
+      - "Percona-Server-client-57"
+      - "Percona-Server-devel-57"
+      - "percona-toolkit"
+    state: present
+
+- name: "Install MySQL-python package (ansible python3)"
+  yum:
+    name: "python3-PyMySQL"
+    state: present

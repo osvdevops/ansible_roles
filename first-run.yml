@@ -1,0 +1,14 @@
+
+---
+- name: "Check if percona-server is installed"
+  shell: rpm -qa | grep -i percona-server-server
+  failed_when: false
+  changed_when: false
+  check_mode: false
+  register: percona_server_is_installed
+
+- name: "Abort when Percona is installed"
+  fail:
+    msg: "The  MySQL Percona server is installed. Please, check"
+  when:
+    - percona_server_is_installed.stdout|trim != ""
