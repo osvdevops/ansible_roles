@@ -1,5 +1,32 @@
 ---
-# handlers file for mysql_percona_57
+- block:
+    - name: first run
+      ansible.builtin.import_tasks: first-run.yml
+      tags:
+        - percona-server-first-run
 
-- name: "Restart percona"
-  service: "name=mysql state=restarted"
+    - name: repository
+      ansible.builtin.import_tasks: repository.yml
+      tags:
+        - percona-server-repository
+
+    - name: install
+      ansible.builtin.import_tasks: install.yml
+      tags:
+        - percona-server-install
+
+    - name: configure
+      ansible.builtin.import_tasks: configure.yml
+      tags:
+        - percona-server-configure
+
+    - name: databases
+      ansible.builtin.import_tasks: databases.yml
+      tags:
+        - percona-server-databases
+
+    - name: users
+      ansible.builtin.import_tasks: users.yml
+      tags:
+        - percona-server-users
+  when: ansible_distribution in ['OracleLinux', 'Rocky'] and ansible_distribution_major_version in ['8','9']
