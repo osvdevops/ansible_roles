@@ -1,0 +1,13 @@
+---
+# Basic settings
+mysql_percona_repo: "https://repo.percona.com/yum/percona-release-latest.noarch.rpm"
+mysql_root_password: "StR0n9_Pa55WorD!"
+mysql_datadir: "/var/lib/mysql"
+
+# Databses & User setting
+mysql_custom_database: "TestDatabase"
+mysql_db_dump_file: "dump_db.sql"
+mysql_user_name: "user_name"
+mysql_user_pass: "pass"
+mysql_user_priv: "{{ mysql_custom_database }}.*:ALL"
+
